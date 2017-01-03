@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 中国国际图书贸易集团公司 
+ * Copyright (c) 2016 权小龙
  * All rights reserved.
  *  
  */

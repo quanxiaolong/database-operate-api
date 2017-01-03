@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 中国国际图书贸易集团公司 
+ * Copyright (c) 2016 权小龙
  * All rights reserved.
  *  
  */
@@ -9,8 +9,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.com.cibtc.database.enums.RelationEnums.Compare;
-import cn.com.cibtc.database.enums.RelationEnums.Logic;
+import cn.com.cibtc.database.enums.Compare;
+import cn.com.cibtc.database.enums.Logic;
+
 
 
 

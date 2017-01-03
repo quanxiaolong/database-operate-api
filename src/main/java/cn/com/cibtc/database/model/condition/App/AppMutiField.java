@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 中国国际图书贸易集团公司 
+ * Copyright (c) 2016 权小龙
  * All rights reserved.
  *  
  */
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import cn.com.cibtc.database.model.condition.DynamicCondition;
+import cn.com.cibtc.database.model.condition.BaseCondition;
 import cn.com.cibtc.database.model.condition.ConditionBlock;
 
 
@@ -53,14 +53,14 @@ public class AppMutiField implements Serializable {
 	/**
 	 * 根据前台字段集合，创建后台动态条件
 	 * F:表示查询类字段枚举
-	 * T:表示动态条件 extends {@link DynamicCondition}
+	 * T:表示动态条件 extends {@link BaseCondition}
 	 * @date 2016年1月5日下午2:35:16
 	 * @param enumField
 	 * @param appFields
 	 * @return 
 	 * @return
 	 */
-	public <F extends Enum<F>,T extends DynamicCondition<F>> T createCondition(Class<T> conditionClz,Class<F> fieldClz){
+	public <F extends Enum<F>,T extends BaseCondition<F>> T createCondition(Class<T> conditionClz,Class<F> fieldClz){
 		
 		T condition=null;
 		
@@ -84,12 +84,11 @@ public class AppMutiField implements Serializable {
 			if(appField!=null&&appField.isAvailable()){
 				String fieldName=appField.getName();
 				String fieldValue=appField.getValue();
-				String upCaseName=fieldName.toUpperCase();
-				if(mapEnumField.containsKey(upCaseName)){
+				if(mapEnumField.containsKey(fieldName)){
 					if(block==null){
 						block=new ConditionBlock<F>();
 					}
-					block.addCompareCondition(mapEnumField.get(upCaseName), appField.getEnumLogic(), appField.getEnumCompare(), fieldValue);
+					block.addCompareCondition(mapEnumField.get(fieldName), appField.getEnumLogic(), appField.getEnumCompare(), fieldValue);
 				}
 			}
 		}

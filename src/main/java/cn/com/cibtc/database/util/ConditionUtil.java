@@ -1,13 +1,11 @@
 /*
- * Copyright (c) 2014 中国国际图书贸易集团公司 
+ * Copyright (c) 2016 权小龙
  * All rights reserved.
  *  
  */
 package cn.com.cibtc.database.util;
 
-import cn.com.cibtc.database.enums.RelationEnums.Compare;
-import cn.com.cibtc.database.model.condition.ConditionBlock;
-import cn.com.cibtc.database.model.condition.DynamicCondition;
+import cn.com.cibtc.database.model.condition.BaseCondition;
 
 /**
  * <p>标题：SearchConditionUtil </p>
@@ -26,7 +24,7 @@ public class ConditionUtil {
 	 * @param condition
 	 * @return
 	 */
-	public static final boolean isConditionAvailable(DynamicCondition<?> condition){
+	public static final boolean isConditionAvailable(BaseCondition<?> condition){
 		boolean available=true;
 		if(condition==null)
 			available=false;
@@ -34,21 +32,5 @@ public class ConditionUtil {
 			available=false;
 		}
 		return available;
-	}
-	
-	/**
-	 * 创建Id查询动态条件
-	 * @date 2016年2月22日上午11:01:03
-	 * @author QuanXiaolong
-	 * @param fieldId 数据库字段枚举 Id
-	 * @param id 
-	 * @return
-	 */
-	public static final <T extends Enum<T>> DynamicCondition<T> createConditionID(T fieldId,String id){
-		DynamicCondition<T> condition = new DynamicCondition<T>();
-		ConditionBlock<T> block =new ConditionBlock<T>();
-		block.addCompareCondition(fieldId, Compare.EQUAL, id);
-		condition.addCondationBlock(block);
-		return condition;
 	}
 }
