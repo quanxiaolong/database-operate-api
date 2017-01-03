@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="database.operate.api.common.mapper" >
+	<sql id="base_condition">
+		<trim suffix=" " suffixOverrides="and | or | AND | OR">
+			where 1=1 and
+			<if test="condition.conditionBlocks.size!=0">
+				<trim suffix=")" suffixOverrides=")and | )or | )AND | )OR|)">
+					<foreach collection="condition.conditionBlocks" item="conditionBlock">
+						<if test="conditionBlock.inFields.size != 0 or conditionBlock.compareFields.size != 0 or conditionBlock.emptyFields.size!=0">
+							(
+						</if>
+						<trim suffix=" " suffixOverrides="and | or | AND | OR">
+							<if test="conditionBlock.inFields.size!=0">
+								<foreach collection="conditionBlock.inFields" item="inField">
+									<if test="inField.values.size!=0">
+										${inField.fieldName} ${inField.conditionType}
+										<foreach collection="inField.values" item="value" open="(" close=")" separator=",">
+											#{value}
+										</foreach>
+										${inField.logic}
+									</if>
+								</foreach>
+							</if>
+							<if test="conditionBlock.compareFields.size!=0">
+								<foreach collection="conditionBlock.compareFields" item="compareField">
+									${compareField.fieldName} ${compareField.conditionType} #{compareField.value} ${compareField.logic}
+								</foreach>
+							</if>
+							<if test="conditionBlock.emptyFields.size!=0">
+								<foreach collection="conditionBlock.emptyFields" item="emptyField">
+									${emptyField.fieldName} ${emptyField.conditionType} NULL ${emptyField.logic}
+								</foreach>
+							</if>
+						</trim>
+						<if test="conditionBlock.inFields.size != 0 or conditionBlock.compareFields.size != 0 or conditionBlock.emptyFields.size!=0">
+							)${conditionBlock.logic}
+						</if>
+					</foreach>
+				</trim>
+			</if>
+		</trim>
+		<if test="condition.sortFields.size!=0">
+			ORDER BY
+			<foreach collection="condition.sortFields" item="sortField" separator=",">
+				${sortField.fieldName} ${sortField.orderBy}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

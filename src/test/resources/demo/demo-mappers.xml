@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cibtc.ebs.merchant.member.dao.MerchantDao" >
+ 
+	<resultMap id="BaseResultMap" type="cn.com.cibtc.ebs.merchant.member.model.Merchant" >
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR" />
+		<result column="MERCHANT_NAME" property="merchantName" jdbcType="VARCHAR" />
+		<result column="USER_TYPE" property="userType" jdbcType="INTEGER" />
+		<result column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
+		<result column="ROOT_ID" property="rootId" jdbcType="BIGINT" />
+		<result column="AUTHORITY" property="authority" jdbcType="VARCHAR" />
+		<result column="COUNTRY_CODE" property="countryCode" jdbcType="VARCHAR" />
+		<result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" />
+		<result column="ADDRESS_DETAIL" property="addressDetail" jdbcType="VARCHAR" />
+		<result column="CONTACT_PERSON" property="contactPerson" jdbcType="LONGVARCHAR" />
+		<result column="INFO" property="info" jdbcType="LONGVARCHAR" />	
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="LOGIN_COUNT" property="loginCount" jdbcType="BIGINT" />
+		<result column="IS_VALID" property="isValid" jdbcType="INTEGER" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+	</resultMap>
+		
+	<!-- =============变量区域=============== -->
+	
+	<!-- 表名 -->
+	<sql id="tableName">MERCHANT</sql>
+	
+	<!-- 主键 -->
+	<sql id="pk">ID</sql>
+	
+	<!-- 数据表列名 -->
+	<sql id="Base_Column_List" >
+		ID, 
+		USER_NAME, 
+		USER_PASSWORD, 
+		MERCHANT_NAME, 
+		USER_TYPE, 
+		PARENT_ID, 
+		ROOT_ID,
+		AUTHORITY, 
+		COUNTRY_CODE, 
+		PROVINCE_NAME, 
+		ADDRESS_DETAIL, 
+		CONTACT_PERSON, 
+		INFO,
+		EMAIL, 
+		LOGIN_COUNT,
+		IS_VALID, 
+		CREATE_TIME
+	</sql>
+	
+	<!-- 更新字段 -->
+	<sql id="updateFields">
+		<if test="updateField.listField.contains('USER_NAME')" >
+			USER_NAME = #{model.userName,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('USER_PASSWORD')" >
+			USER_PASSWORD = #{model.userPassword,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('MERCHANT_NAME')" >
+			MERCHANT_NAME = #{model.merchantName,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('USER_TYPE')" >
+			USER_TYPE = #{model.userType,jdbcType=INTEGER},
+		</if>
+		<if test="updateField.listField.contains('PARENT_ID')" >
+			PARENT_ID = #{model.parentId,jdbcType=BIGINT},
+		</if>
+		<if test="updateField.listField.contains('ROOT_ID')" >
+			ROOT_ID = #{model.rootId,jdbcType=BIGINT},
+		</if>
+		<if test="updateField.listField.contains('AUTHORITY')" >
+			AUTHORITY = #{model.authority,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('COUNTRY_CODE')" >
+			COUNTRY_CODE = #{model.countryCode,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('PROVINCE_NAME')" >
+			PROVINCE_NAME = #{model.provinceName,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('ADDRESS_DETAIL')" >
+			ADDRESS_DETAIL = #{model.addressDetail,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('CONTACT_PERSON')" >
+			CONTACT_PERSON = #{model.contactPerson,jdbcType=LONGVARCHAR},
+		</if>
+		<if test="updateField.listField.contains('INFO')" >
+			INFO = #{model.info,jdbcType=LONGVARCHAR},
+		</if>
+		<if test="updateField.listField.contains('EMAIL')" >
+			EMAIL = #{model.email,jdbcType=VARCHAR},
+		</if>
+		<if test="updateField.listField.contains('LOGIN_COUNT')" >
+			LOGIN_COUNT = #{model.loginCount,jdbcType=BIGINT},
+		</if>
+		<if test="updateField.listField.contains('IS_VALID')" >
+			IS_VALID = #{model.isValid,jdbcType=INTEGER},
+		</if>
+	</sql>
+	
+	<!-- 插入字段键 -->
+	<sql id="insertKeys">
+		(
+			<include refid="Base_Column_List"/>
+		)
+	</sql>
+	
+	<!-- 插入字段值 -->
+	<sql id="insertValues">
+		(
+		#{model.id,jdbcType=BIGINT}, 
+		#{model.userName,jdbcType=VARCHAR}, 
+		#{model.userPassword,jdbcType=VARCHAR}, 
+		#{model.merchantName,jdbcType=VARCHAR}, 
+		#{model.userType,jdbcType=INTEGER}, 
+		#{model.parentId,jdbcType=BIGINT}, 
+		#{model.rootId,jdbcType=BIGINT}, 
+		#{model.authority,jdbcType=VARCHAR}, 
+		#{model.countryCode,jdbcType=VARCHAR}, 
+		#{model.provinceName,jdbcType=VARCHAR},
+		#{model.addressDetail,jdbcType=VARCHAR}, 
+		#{model.contactPerson,jdbcType=LONGVARCHAR}, 
+		#{model.info,jdbcType=LONGVARCHAR}, 
+		#{model.email,jdbcType=VARCHAR}, 
+		#{model.loginCount,jdbcType=BIGINT},
+		#{model.isValid,jdbcType=INTEGER}, 
+		#{model.createTime,jdbcType=BIGINT}
+		)
+	</sql>
+	<!-- =============查询区域=============== -->
+	
+	<select id="searchById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			<include refid="tableName" />
+		WHERE 
+			<include refid="pk" /> = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<select id="searchWithBatch" resultMap="BaseResultMap">
+		SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			<include refid="tableName" />
+		WHERE 
+		<include refid="pk" /> IN
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id,jdbcType=BIGINT}
+		</foreach>
+	</select>
+	
+	<select id="searchCount" resultType="java.lang.Integer" parameterType="DynamicCondition">
+		SELECT
+			COUNT(*)
+		FROM
+			<include refid="tableName" />
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</select>
+	
+	<select id="search" resultMap="BaseResultMap" parameterType="DynamicCondition">
+		SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			<include refid="tableName" />
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</select>
+	
+	<select id="searchOne" resultMap="BaseResultMap" parameterType="DynamicCondition">
+		SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			<include refid="tableName" />
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</select>
+<!-- 	<select id="page" resultMap="BaseResultMap">
+		SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			<include refid="tableName" />
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</select>
+		 -->
+	<!-- =============插入区域=============== -->
+	
+	<insert id="insert" keyProperty="model.id" useGeneratedKeys="true">
+		INSERT INTO 
+		<include refid="tableName" /> 
+		<include refid="insertKeys" />
+		VALUES 
+		<include refid="insertValues"/>
+	</insert>
+	
+	<insert id="insertWithBatch">
+		INSERT INTO 
+		<include refid="tableName" />	
+		<include refid="insertKeys" />
+		VALUES
+		<foreach collection="models" item="model" index="index" separator=",">
+			<if test="models[index] != null">
+				<include refid="insertValues"/>
+			</if>
+		</foreach>
+	</insert>
+	
+	<!-- =============更新区域=============== -->
+	
+	<update id="update">
+		UPDATE 
+		<include refid="tableName" />
+		<set>
+			<include refid="updateFields"/>
+		</set>
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</update>
+	
+	<!-- =============删除区域=============== -->
+	
+	<delete id="delete" parameterType="DynamicCondition">
+		DELETE FROM 
+			<include refid="tableName" />
+		<include refid="database.operate.api.common.mapper.base_condition" />
+	</delete>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE FROM 
+			<include refid="tableName" />
+		WHERE 
+			<include refid="pk" /> = #{id,jdbcType=BIGINT}
+	</delete>
+	
+</mapper>
