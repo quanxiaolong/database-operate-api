@@ -7,45 +7,50 @@
 			<if test="condition.conditionBlocks.size!=0">
 				<trim suffix=")" suffixOverrides=")and | )or | )AND | )OR|)">
 					<foreach collection="condition.conditionBlocks" item="conditionBlock">
-						<if test="conditionBlock.fields.size != 0">
+						<if test="conditionBlock.fields.size != 0 or conditionBlock.sqlField != null">
 							(
 							<trim suffix=" " suffixOverrides="and | or | AND | OR">
-								<foreach collection="conditionBlock.fields" item="field">
-									<choose>
-										<when test="field instanceof cn.com.cibtc.database.model.condition.field.CompareField">
-											<!-- 处理特出比较条件Like -->
-											<choose>
-												<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@LIKE.toString()">
-													${field.fieldName} LIKE CONCAT('%', #{field.value}, '%')  ${field.logic}
-												</when>
-												<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@LEFT_LIKE.toString()">
-													${field.fieldName} LIKE CONCAT('%', #{field.value})  ${field.logic}
-												</when>
-												<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@RIGHT_LIKE.toString()">
-													${field.fieldName} LIKE CONCAT(#{field.value}, '%')  ${field.logic}
-												</when>
-												<otherwise>
-													${field.fieldName} ${field.conditionType} #{field.value} ${field.logic}
-												</otherwise>
-											</choose>
-										</when>
-										<when test="field instanceof cn.com.cibtc.database.model.condition.field.InField">
-											<if test="field.values.size!=0">
-												${field.fieldName} ${field.conditionType}
-												<foreach collection="field.values" item="value" open="(" close=")" separator=",">
-													#{value}
-												</foreach>
-												${field.logic}
-											</if>
-										</when>
-										<when test="field instanceof cn.com.cibtc.database.model.condition.field.EmptyField">
-											${field.fieldName} ${field.conditionType} NULL ${field.logic}
-										</when>
-										<otherwise>
-										
-										</otherwise>
-									</choose>
-								</foreach>
+								<if test="conditionBlock.fields.size != 0">
+									<foreach collection="conditionBlock.fields" item="field">
+										<choose>
+											<when test="field instanceof cn.com.cibtc.database.model.condition.field.CompareField">
+												<!-- 处理特出比较条件Like -->
+												<choose>
+													<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@LIKE.toString()">
+														${field.fieldName} LIKE CONCAT('%', #{field.value}, '%')  ${field.logic}
+													</when>
+													<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@LEFT_LIKE.toString()">
+														${field.fieldName} LIKE CONCAT('%', #{field.value})  ${field.logic}
+													</when>
+													<when test="field.conditionType ==@cn.com.cibtc.database.enums.Compare@RIGHT_LIKE.toString()">
+														${field.fieldName} LIKE CONCAT(#{field.value}, '%')  ${field.logic}
+													</when>
+													<otherwise>
+														${field.fieldName} ${field.conditionType} #{field.value} ${field.logic}
+													</otherwise>
+												</choose>
+											</when>
+											<when test="field instanceof cn.com.cibtc.database.model.condition.field.InField">
+												<if test="field.values.size!=0">
+													${field.fieldName} ${field.conditionType}
+													<foreach collection="field.values" item="value" open="(" close=")" separator=",">
+														#{value}
+													</foreach>
+													${field.logic}
+												</if>
+											</when>
+											<when test="field instanceof cn.com.cibtc.database.model.condition.field.EmptyField">
+												${field.fieldName} ${field.conditionType} NULL ${field.logic}
+											</when>
+											<otherwise>
+											
+											</otherwise>
+										</choose>
+									</foreach>
+								</if>
+								<if test="conditionBlock.sqlField != null">
+									${@cn.com.cibtc.database.util.MybatisSqlConvert@convertSqlByRegex(conditionBlock.sqlField)}
+								</if>
 							</trim>
 							)${conditionBlock.logic}
 						</if>
