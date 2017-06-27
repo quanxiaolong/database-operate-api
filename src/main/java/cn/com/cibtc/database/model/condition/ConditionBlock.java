@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+
 import cn.com.cibtc.database.enums.Compare;
 import cn.com.cibtc.database.enums.Empty;
 import cn.com.cibtc.database.enums.In;
@@ -18,6 +19,7 @@ import cn.com.cibtc.database.model.condition.field.CompareField;
 import cn.com.cibtc.database.model.condition.field.EmptyField;
 import cn.com.cibtc.database.model.condition.field.Field;
 import cn.com.cibtc.database.model.condition.field.InField;
+import cn.com.cibtc.database.model.condition.field.SqlField;
 
 
 
@@ -38,6 +40,11 @@ public class ConditionBlock<FieldEnum extends Enum<FieldEnum>> implements Serial
 	 * 条件字段集合
 	 */
 	private List<Field> fields = new ArrayList<Field>();
+	
+	/**
+	 * 直接SQL查询条件
+	 */
+	private SqlField sqlField;
 	/**
 	 * 与下一个条件块之间的关系
 	 */
@@ -56,6 +63,10 @@ public class ConditionBlock<FieldEnum extends Enum<FieldEnum>> implements Serial
 	
 	public List<Field> getFields() {
 		return fields;
+	}
+	
+	public SqlField getSqlField() {
+		return sqlField;
 	}
 
 	/**
@@ -171,5 +182,19 @@ public class ConditionBlock<FieldEnum extends Enum<FieldEnum>> implements Serial
 			return;
 		EmptyField emptyField=new EmptyField(field.toString(), logicRelation.toString(), emptyType.toString());
 		this.fields.add(emptyField);
+	}
+	/**
+	 * 添加SQL直接查询
+	 * @date 2017年6月19日 上午11:24:55
+	 * @author 陶聪
+	 * @param sqlWhere	字符串格式：colum1 = #{} and colum2 = #{}
+	 *                  当参数为null或空时，不进行操作
+	 * @param params	实际查询参数集合
+	 */
+	public void addSqlCondition(String sqlWhere, Object[] params) {
+		if (!StringUtils.isEmpty(sqlWhere)) {
+			SqlField sqlField = new SqlField(sqlWhere, params);
+			this.sqlField = sqlField;
+		}
 	}
 }

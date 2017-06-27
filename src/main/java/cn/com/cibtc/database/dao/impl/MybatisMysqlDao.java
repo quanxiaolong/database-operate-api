@@ -26,7 +26,7 @@ import cn.com.cibtc.database.model.condition.mysql.MySqlCondition;
  * <p>作者：权小龙</p>
  * <p>版本：1.0</p>
  */
-public interface MybatisDao<FieldEnum extends Enum<FieldEnum>,Model,PK> extends ICommonDao<FieldEnum,Model,PK>{
+public interface MybatisMysqlDao<FieldEnum extends Enum<FieldEnum>,Model,PK> extends ICommonDao<FieldEnum,Model,PK>{
 	
 	/**
 	 * 通过ID 获取 数据模型信息
